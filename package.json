@@ -1,0 +1,22 @@
+{
+  "name": "dt207g_moment3_webbservice",
+  "version": "1.0.0",
+  "description": "Webbservice part of Moment 3 in DT207G.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Hello World\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LinnEriksson89/DT207G_Moment3_webbservice.git"
+  },
+  "author": "Linn Eriksson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LinnEriksson89/DT207G_Moment3_webbservice/issues"
+  },
+  "homepage": "https://github.com/LinnEriksson89/DT207G_Moment3_webbservice#readme",
+  "dependencies": {
+    "mongoose": "^8.4.4"
+  }
+}
