@@ -18,6 +18,36 @@ mongoose.connect("mongodb://127.0.0.1:27017/dt207g_moment3")
         console.log("Error connecting to database: " + error);
     });
 
+//Create a schema.
+const jobSchema = mongoose.Schema({
+    companyname: {
+        type: String,
+        required: true
+    },
+    jobtitle: {
+        type: String,
+        required: true
+    },
+    location: {
+        type: String,
+        required: true
+    },
+    startdate: {
+        type: Date,
+        required: true
+    },
+    enddate: {
+        type: Date,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    }
+});
+
+//Create a model.
+const Job = mongoose.model('Job', jobSchema);
 
 //Start server.
 app.listen(port, () => {
