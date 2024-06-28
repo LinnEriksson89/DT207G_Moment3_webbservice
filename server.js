@@ -107,9 +107,95 @@ app.get("/api/work/:id", async (req, res) => {
 
 //Post /api/work/.
 app.post("/api/work", async (req, res) => {
+    //Variables from the body.
+    let companyname = req.body.companyname;
+    let jobtitle = req.body.jobtitle;
+    let location = req.body.location;
+    let startdate = req.body.startdate;
+    let enddate = req.body.enddate;
+    let description = req.body.description;
+
+    //Object for errors.
+    let error = {
+        message: "",
+        details: "",
+        https_response: {}
+    };
+
+    //If any fields of information are empty.
+    if(!companyname || !jobtitle || !location || !startdate || !enddate || !description) {
+        
+        //Error messages and response code.
+        error.message = "Information saknas!";
+        error.details = "För att lägga till ett jobb krävs företagets namn, titel på anställningen, stad där företaget finns, startdatum, slutdatum och en beskrivning av anställningen.";
+        error.https_response.message = "Bad Request";
+        error.https_response.code = 400;
+        
+        //Send error-message and return.
+        res.status(400).json(error);
+        return;
+    } else if (companyname.length < 4 || companyname.length > 32) {
+        //If companyname is too short or too long.
+        error.message = "Felaktig information.";
+        error.details = "Företagsnamn behöver vara 4-32 tecken långa.";
+        error.https_response.message = "Bad request";
+        error.https_response.code = 400;
+
+        //Send error-message and return.
+        res.status(400).json(error);
+        return;
+    } else if (jobtitle.length < 4 || jobtitle.length > 64) {
+        //If job title is too short or too long.
+        error.message = "Felaktig information.";
+        error.details = "Titel på anställningen behöver vara 4-64 tecken lång.";
+        error.https_response.message = "Bad request";
+        error.https_response.code = 400;
+
+        //Send error-message and return.
+        res.status(400).json(error);
+        return;
+    } else if (location.length < 4 || location.length > 32) {
+        //If location is too short or too long.
+        error.message = "Felaktig information.";
+        error.details = "Namnet på staden där företaget finns måste vara 4-32 tecken långt.";
+        error.https_response.message = "Bad request";
+        error.https_response.code = 400;
+        
+        //Send error-message and return.
+        res.status(400).json(error);
+        return;
+    } else if (description.length < 10 || description.length > 128) {
+        //If description is too short or too long.
+        error.message = "Felaktig information.";
+        error.details = "Beskrivningen behöver vara 4-128 tecken lång.";
+        error.https_response.message = "Bad request";
+        error.https_response.code = 400;
+
+        //Send error-message and return.
+        res.status(400).json(error);
+        return;
+    }
+
     //Try-catch to try do add a new job to the database.
     try {
-        //
+        //Create job-object
+        let job = {
+            companyname: companyname,
+            jobtitle: jobtitle,
+            location: location,
+            startdate: startdate,
+            enddate: enddate,
+            description: description
+        }
+
+        let result = await Job.create(job);
+
+        //If there are no results the insert didn't work and 500 is shown, else show result.
+        if(result === null) {
+            return res.status(500).json({message: "Något gick fel: " + error});
+        } else {
+            return res.status(201).json({message: "Följande jobb har lagts till: ", job});
+        }
     } catch (error) {
         return res.status(500).json({message: "Något gick fel: " + error});
     }
