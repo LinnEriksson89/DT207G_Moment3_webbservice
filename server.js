@@ -202,7 +202,7 @@ app.post("/api/work", async (req, res) => {
 });
 
 //Put /api/work/id.
-app.put("/api/work", async (req, res) => {
+app.put("/api/work/:id", async (req, res) => {
     
     //Variables from the body.
     let id = req.params.id;
@@ -300,10 +300,18 @@ app.put("/api/work", async (req, res) => {
 });
 
 //Delete /api/work/id.
-app.delete("/api/work", async (req, res) => {
-    //
+app.delete("/api/work/:id", async (req, res) => {
+    //Variables
+    let id = req.params.id;
+    //Try to delete item based on id.
     try {
-        //
+        let result = await Job.deleteOne({_id: id});
+
+        if(result === null) {
+            res.status(500).json({message: "Något gick fel: " + error});
+        } else {
+            res.status(200).json({message: "Jobbet med följande id har raderats: " + id});
+        }
     } catch (error) {
         return res.status(500).json({message: "Något gick fel: " + error});
     }
