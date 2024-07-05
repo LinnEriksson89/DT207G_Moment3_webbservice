@@ -317,6 +317,10 @@ app.delete("/api/work/:id", async (req, res) => {
     }
 });
 
+app.all("*", (req, res) => {
+    res.status(404).json({message: "Sidan hittades inte!"});
+});
+
 //Start server.
 app.listen(port, () => {
     console.log("Server running on port: " + port);
