@@ -33,18 +33,25 @@ mongoose.connect("mongodb://127.0.0.1:27017/dt207g_moment3")
 const jobSchema = mongoose.Schema({
     companyname: {
         type: String,
-        required: [true, "Du måste ange företagets namn."]
+        required: [true, "Du måste ange företagets namn."],
+        min: [4, "Företagets namn måste ha minst 4 bokstäver."],
+        max: [32, "Företagets namn får vara max 32 bokstäver."]
     },
     jobtitle: {
         type: String,
-        required: [true, "Du måste ange anställningens titel."]
+        required: [true, "Du måste ange anställningens titel."],
+        min: [4, "Anställningens titel måste ha minst 4 bokstäver."],
+        max: [64, "Anställningens titel får vara max 64 bokstäver."]
     },
     location: {
         type: String,
-        required: [true, "Du måste ange staden företaget låg i."]
+        required: [true, "Du måste ange staden företaget låg i."],
+        min: [4, "Stadens namn måste ha minst 4 bokstäver."],
+        max: [32, "Stadens namn får vara max 32 bokstäver."]
     },
     startdate: {
         type: Date,
+
         required: [true, "Du måste ange ett startdatum."]
     },
     enddate: {
@@ -53,7 +60,9 @@ const jobSchema = mongoose.Schema({
     },
     description: {
         type: String,
-        required: [true, "Du måste ange en beskrivning av anställningen."]
+        required: [true, "Du måste ange en beskrivning av anställningen."],
+        min: [10, "Beskrivningen måste ha minst 10 bokstäver."],
+        max: [128, "Beskrivningen får vara max 128 bokstäver."]
     }
 });
 
