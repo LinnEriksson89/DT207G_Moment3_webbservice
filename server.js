@@ -34,20 +34,20 @@ const jobSchema = mongoose.Schema({
     companyname: {
         type: String,
         required: [true, "Du måste ange företagets namn."],
-        minLength: [4, "Företagets namn måste ha minst 4 bokstäver."],
-        maxLength: [32, "Företagets namn får vara max 32 bokstäver."]
+        min: [4, "Företagets namn måste ha minst 4 bokstäver."],
+        max: [32, "Företagets namn får vara max 32 bokstäver."]
     },
     jobtitle: {
         type: String,
         required: [true, "Du måste ange anställningens titel."],
-        minLength: [4, "Anställningens titel måste ha minst 4 bokstäver."],
-        maxLength: [64, "Anställningens titel får vara max 64 bokstäver."]
+        min: [4, "Anställningens titel måste ha minst 4 bokstäver."],
+        max: [64, "Anställningens titel får vara max 64 bokstäver."]
     },
     location: {
         type: String,
         required: [true, "Du måste ange staden företaget låg i."],
-        minLength: [4, "Stadens namn måste ha minst 4 bokstäver."],
-        maxLength: [32, "Stadens namn får vara max 32 bokstäver."]
+        min: [4, "Stadens namn måste ha minst 4 bokstäver."],
+        max: [32, "Stadens namn får vara max 32 bokstäver."]
     },
     startdate: {
         type: Date,
@@ -60,8 +60,8 @@ const jobSchema = mongoose.Schema({
     description: {
         type: String,
         required: [true, "Du måste ange en beskrivning av anställningen."],
-        minLength: [10, "Beskrivningen måste ha minst 10 bokstäver."],
-        maxLength: [128, "Beskrivningen får vara max 128 bokstäver."]
+        min: [10, "Beskrivningen måste ha minst 10 bokstäver."],
+        max: [128, "Beskrivningen får vara max 128 bokstäver."]
     }
 });
 
@@ -284,23 +284,21 @@ app.put("/api/work/:id", async (req, res) => {
 
     //Try to update the job
     try {
-        //Create job-object
-        let job = {
+
+        let result = await Job.updateOne({_id: id}, {$set: {
             companyname: companyname,
             jobtitle: jobtitle,
             location: location,
             startdate: startdate,
             enddate: enddate,
             description: description
-        }
-
-        let result = await Job.updateOne({_id: id}, {$set: {job}});
+        }});
 
         //If there are no results the update didn't work.
         if(result === null) {
             return res.status(500).json({message: "Något gick fel: " + error});
         } else {
-            return res.status(200).json({message: "Jobbet har uppdaterats med följande infO: " + job});
+            return res.status(200).json({message:  `Jobbet har uppdaterats med följande info:" companyname: ${companyname}, jobtitle: ${jobtitle}, location: ${location}, startdate: ${startdate}, enddate: ${enddate}, description: ${description}`});
         }
     } catch (error) {
         return res.status(500).json({message: "Något gick fel: " + error});
